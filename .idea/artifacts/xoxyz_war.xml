@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="xoxyz:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>xoxyz</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="xoxyz-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="xoxyz:war exploded" />
+    </root>
+  </artifact>
+</component>
