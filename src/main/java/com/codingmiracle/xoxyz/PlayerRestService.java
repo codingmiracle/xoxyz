@@ -15,8 +15,7 @@ public class PlayerRestService {
     @Path("/{PlayerName}")
     @POST
     public void createPlayer(@PathParam("PlayerName") String name) {
-        Player player = new Player(name);
-        playerList.add(player);
+        Player player = new Player(name);playerList.add(player);
     }
 
     @Path("/{PlayerId}")

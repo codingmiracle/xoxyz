@@ -34,7 +34,7 @@ public class Game {
         return id;
     }
 
-        public boolean JoinPlayer(Player p) {
+    public boolean JoinPlayer(Player p) {
         if(p1 == null) {
             p1 = p;
         } else if(p2 == null) {
@@ -49,5 +49,16 @@ public class Game {
         return -1;
     }
 
+    public boolean isJoinable() {
+        return p1 != null && p2 != null;
+    }
+
+    private boolean isEqual() {
+        return true;
+    }
+
+    private boolean isP1Win() {
+        return true;
+    }
 
 }
