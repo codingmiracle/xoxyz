@@ -1,9 +1,9 @@
 package com.codingmiracle.xoxyz;
 
 public class Move {
-    private int x;
-    private int y;
-    private long player;
+    private final int x;
+    private final int y;
+    private final long player;
 
     public Move(int x, int y, long player) {
         this.x = x;

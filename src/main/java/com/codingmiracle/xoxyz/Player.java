@@ -44,6 +44,10 @@ public class Player {
         this.name = name;
     }
 
+    public static boolean isPlayerId(String value) {
+        return value.matches("^[0-9]*$");
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(obj.getClass() == Player.class) {

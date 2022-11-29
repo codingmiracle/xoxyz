@@ -30,7 +30,7 @@ public class GameRestService {
 
     @POST
     @Path("{GameId}/set")
-    public boolean setAtGame(int x, int y, @PathParam("GameId") long gameId) {
+    public boolean setAtGame(@PathParam("GameId") long gameId) {
         return true;
     }
 }
