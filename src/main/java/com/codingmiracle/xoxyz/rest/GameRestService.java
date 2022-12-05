@@ -1,5 +1,7 @@
-package com.codingmiracle.xoxyz;
+package com.codingmiracle.xoxyz.rest;
 
+import com.codingmiracle.xoxyz.Game;
+import com.codingmiracle.xoxyz.Player;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
