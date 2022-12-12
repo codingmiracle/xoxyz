@@ -6,6 +6,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.security.InvalidParameterException;
 import java.sql.SQLException;
 
 @Path("/player")
@@ -32,7 +33,7 @@ public class PlayerRestService {
                 return Response.ok(playerDataService.queryPlayerByName(name)).build();
             }
             return Response.status(500).build();
-        } catch (SQLException e) {
+        } catch (SQLException | InvalidParameterException e) {
             return Response.status(400).build();
         }
     }

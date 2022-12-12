@@ -1,33 +1,30 @@
 package com.codingmiracle.xoxyz;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 public class Game {
     private long id;
-    private Player p1;
-    private Player p2;
-    private List field;
-    private boolean p1turn;
+    private Player host;
+    private Player guest;
+    private Set<Move> moves;
+    private boolean hostturn;
 
     public Game() {
-        this.p1 = null;
-        this.p2 = null;
-        this.p1turn = true;
-        field = new ArrayList<Integer>();
+        this.host = null;
+        this.guest = null;
+        this.hostturn = true;
     }
 
     public Game(long id) {
         this.id = id;
-        this.p2 = null;
-        this.p1turn = true;
-        field = new ArrayList<Integer>();
+        this.guest = null;
+        this.hostturn = true;
     }
 
-    public Game(Player p1) {
-        this.p1 = p1;
-        this.p2 = null;
-        this.p1turn = true;
+    public Game(Player host) {
+        this.host = host;
+        this.guest = null;
+        this.hostturn = true;
     }
 
     public long getId() {
@@ -35,10 +32,10 @@ public class Game {
     }
 
     public boolean JoinPlayer(Player p) {
-        if(p1 == null) {
-            p1 = p;
-        } else if(p2 == null) {
-            p2 = p;
+        if(host == null) {
+            host = p;
+        } else if(guest == null) {
+            guest = p;
             return true;
         }
         return false;
@@ -50,7 +47,7 @@ public class Game {
     }
 
     public boolean isJoinable() {
-        return p1 != null && p2 != null;
+        return host != null && guest != null;
     }
 
     private boolean isEqual() {

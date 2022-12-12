@@ -2,6 +2,7 @@ package com.codingmiracle.xoxyz.data;
 
 import com.codingmiracle.xoxyz.Player;
 
+import java.security.InvalidParameterException;
 import java.sql.*;
 
 public class PlayerDataService {
@@ -13,6 +14,9 @@ public class PlayerDataService {
     }
 
     public boolean createPlayer(String name) throws SQLException {
+        if(Player.isPlayerId(name)) {
+            throw  new InvalidParameterException();
+        }
         PreparedStatement playerInsert = connection.prepareStatement("INSERT INTO db_xoxyz.tbl_player (player_name) VALUES (?)");
         playerInsert.setString(1, name);
         return playerInsert.execute();
