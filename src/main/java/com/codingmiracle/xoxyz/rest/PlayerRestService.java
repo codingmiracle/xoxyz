@@ -16,8 +16,8 @@ public class PlayerRestService {
 
     PlayerRestService() {
         try {
-            String url = "jdbc:mariadb://localhost:3306/db_xoxyz";
-            String user = "web_client";
+            String url = "url";
+            String user = "user";
             String password = "password";
             playerDataService = new PlayerDataService(url, user, password);
         } catch (SQLException e) {

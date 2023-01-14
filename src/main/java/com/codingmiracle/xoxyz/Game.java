@@ -8,23 +8,26 @@ public class Game {
     private Player guest;
     private Set<Move> moves;
     private boolean hostturn;
-
-    public Game() {
-        this.host = null;
-        this.guest = null;
-        this.hostturn = true;
-    }
-
-    public Game(long id) {
-        this.id = id;
-        this.guest = null;
-        this.hostturn = true;
-    }
+    private Player winner;
 
     public Game(Player host) {
         this.host = host;
         this.guest = null;
         this.hostturn = true;
+    }
+
+    public Game(long id, Player host) {
+        this.id = id;
+        this.host = host;
+        this.guest = null;
+        this.hostturn = true;
+    }
+
+    public Game(long id, Player host, Player guest, Player winner) {
+        this.id = id;
+        this.host = host;
+        this.guest = guest;
+        this.winner = winner;
     }
 
     public long getId() {
@@ -50,12 +53,11 @@ public class Game {
         return host != null && guest != null;
     }
 
-    private boolean isEqual() {
-        return true;
+    private boolean isEqual(Object obj) {
+        if(obj.getClass() == Game.class) {
+            Game game = (Game) obj;
+            return this.getId() == game.getId();
+        }
+        return false;
     }
-
-    private boolean isP1Win() {
-        return true;
-    }
-
 }

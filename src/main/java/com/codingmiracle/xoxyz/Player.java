@@ -10,15 +10,6 @@ public class Player {
         this.name = name;
     }
 
-    public Player() {
-        this.name = null; this.id = generateId();
-    }
-
-    public Player(String name) {
-        this.name = name;
-        this.id = generateId();
-    }
-
     public Player(long id) {
         this.id = id;
         this.name = null;
