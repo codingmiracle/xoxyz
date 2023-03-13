@@ -1,9 +1,9 @@
 package com.codingmiracle.xoxyz.data;
 
 
-import com.codingmiracle.xoxyz.Game;
-import com.codingmiracle.xoxyz.Move;
-import com.codingmiracle.xoxyz.Player;
+import com.codingmiracle.xoxyz.Models.GameDto;
+import com.codingmiracle.xoxyz.Models.MoveDto;
+import com.codingmiracle.xoxyz.Models.PlayerDto;
 
 import java.sql.*;
 
@@ -17,33 +17,33 @@ public class GameDataService {
         playerDataService = new PlayerDataService(url, user, password);
     }
 
-    public boolean createGame(Player host) throws SQLException {
+    public boolean createGame(PlayerDto host) throws SQLException {
         PreparedStatement playerInsert = connection.prepareStatement("INSERT INTO db_xoxyz.tbl_game (game_host) VALUES (?)");
         playerInsert.setLong(1, host.getId());
         return playerInsert.execute();
     }
 
-    public boolean joinGame(Long gameId, Player guest) throws SQLException {
+    public boolean joinGame(Long gameId, PlayerDto guest) throws SQLException {
         PreparedStatement gameStatement = connection.prepareStatement("UPDATE db_xoxyz.tbl_game t SET t.game_guest = ? WHERE t.game_id = ?");
-        gameStatement.setLong(1, gameId);
-        gameStatement.setLong(2, guest.getId());
+        gameStatement.setLong(2, gameId);
+        gameStatement.setLong(1, guest.getId());
         return gameStatement.execute();
     }
 
-    public Game queryGameById(Long id) throws SQLException {
-        Game game = null;
+    public GameDto queryGameById(Long id) throws SQLException {
+        GameDto gameDto = null;
         PreparedStatement gameQuery = connection.prepareStatement("SELECT * from tbl_game WHERE game_id = ?");
         gameQuery.setLong(1, id);
         ResultSet queryResult = gameQuery.executeQuery();
         while (queryResult.next()) {
-            game = new Game(queryResult.getBigDecimal(1).longValue(), playerDataService.queryPlayerById(queryResult.getLong(2)), playerDataService.queryPlayerById(queryResult.getLong(3)), playerDataService.queryPlayerById(queryResult.getLong(4)));
+            gameDto = new GameDto(queryResult.getBigDecimal(1).longValue(), playerDataService.queryPlayerById(queryResult.getLong(2)), playerDataService.queryPlayerById(queryResult.getLong(3)), playerDataService.queryPlayerById(queryResult.getLong(4)));
         }
-        return game;
+        return gameDto;
     }
 
-    public boolean setMove(Game game, Move move) throws SQLException {
+    public boolean setMove(GameDto gameDto, MoveDto moveDto) throws SQLException {
         PreparedStatement playerInsert = connection.prepareStatement("INSERT INTO db_xoxyz.tbl_game (game_host) VALUES (?)");
-        playerInsert.setLong(1, move.getPlayer());
+        playerInsert.setLong(1, moveDto.getPlayerId());
         return playerInsert.execute();
     }
 
