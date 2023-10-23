@@ -1,10 +1,11 @@
 package com.codingmiracle.xoxyz.rest;
 
-import com.codingmiracle.xoxyz.Game;
-import com.codingmiracle.xoxyz.Player;
+import com.codingmiracle.xoxyz.Models.GameDto;
+import com.codingmiracle.xoxyz.Models.PlayerDto;
 import com.codingmiracle.xoxyz.data.GameDataService;
 import com.codingmiracle.xoxyz.data.PlayerDataService;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.sql.SQLException;
@@ -12,17 +13,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Path("/game")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class GameRestService {
 
     PlayerDataService playerDataService;
     GameDataService gameDataService;
-    Set<Game> runningGames;
+    Set<GameDto> runningGameDtos;
 
     public GameRestService() {
-        String url = "url";
-        String user = "user";
+        String url = "jdbc:mariadb://localhost:3306/db_xoxyz";
+        String user = "web_client";
         String password = "password";
-        runningGames = new HashSet<>();
+        runningGameDtos = new HashSet<>();
         try {
             playerDataService = new PlayerDataService(url, user, password);
             gameDataService = new GameDataService(url, user, password);
@@ -42,14 +45,27 @@ public class GameRestService {
     }
 
     @POST()
-    public Response createGame(long playerId) {
-        Player player;
+    public Response createGame(@QueryParam("id") String param) {
+        PlayerDto playerDto;
         try {
-            player = playerDataService.queryPlayerById(playerId);
-            if(!gameDataService.createGame(player)) {
+            if(PlayerDto.isPlayerId(param)) {
+                playerDto = playerDataService.queryPlayerById(Long.parseLong(param));
+            } else {
+                playerDto = playerDataService.queryPlayerByName(param);
+            }
+        } catch (SQLException e) {
+            return Response.status(500).build();
+        }
+
+        if(playerDto == null) {
+            return Response.status(404, "Player couldn't be found").build();
+        }
+
+        try {
+            if(!gameDataService.createGame(playerDto)) {
                 return Response.ok().build();
             }
-            return Response.status(500, "Game already exists").build();
+            return Response.status(500, "Something went wrong").build();
         } catch (SQLException e) {
             return Response.status(500).build();
         }
@@ -57,13 +73,13 @@ public class GameRestService {
 
     @POST
     @Path("/{GameId}/join")
-    public Response joinGame(long playerId, @PathParam("GameId") long gameId) {
+    public Response joinGame(@QueryParam("id") long playerId, @PathParam("GameId") long gameId) {
         try {
-            Player player = playerDataService.queryPlayerById(playerId);
-            if(!gameDataService.joinGame(gameId, player)) {
-                return Response.status(500, "Could not join Game").build();
+            PlayerDto playerDto = playerDataService.queryPlayerById(playerId);
+            if(!gameDataService.joinGame(gameId, playerDto)) {
+                return Response.ok().build();
             } else {
-                return Response.status(500).build();
+                return Response.status(500, "Could not join Game").build();
             }
         } catch (SQLException e) {
             return Response.status(500).build();

@@ -1,6 +1,6 @@
 package com.codingmiracle.xoxyz.rest;
 
-import com.codingmiracle.xoxyz.Player;
+import com.codingmiracle.xoxyz.Models.PlayerDto;
 import com.codingmiracle.xoxyz.data.PlayerDataService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -16,8 +16,8 @@ public class PlayerRestService {
 
     PlayerRestService() {
         try {
-            String url = "url";
-            String user = "user";
+            String url = "jdbc:mariadb://localhost:3306/db_xoxyz";
+            String user = "web_client";
             String password = "password";
             playerDataService = new PlayerDataService(url, user, password);
         } catch (SQLException e) {
@@ -54,23 +54,23 @@ public class PlayerRestService {
     @Path("/{PlayerValue}")
     @GET
     public Response getPlayer(@PathParam("PlayerValue") String playerVal) {
-        Player player;
-        if (Player.isPlayerId(playerVal)) {
+        PlayerDto playerDto;
+        if (PlayerDto.isPlayerId(playerVal)) {
             Long id = Long.parseLong(playerVal);
             try {
-                player = playerDataService.queryPlayerById(id);
+                playerDto = playerDataService.queryPlayerById(id);
             } catch (SQLException e) {
                 return Response.status(500).build();
             }
         } else {
             try {
-                player = playerDataService.queryPlayerByName(playerVal);
+                playerDto = playerDataService.queryPlayerByName(playerVal);
             } catch (SQLException e) {
                 return Response.status(500).build();
             }
         }
-        if(player != null) {
-            return Response.ok(player).build();
+        if(playerDto != null) {
+            return Response.ok(playerDto).build();
         }
         return Response.status(404).build();
     }

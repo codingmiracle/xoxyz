@@ -1,6 +1,6 @@
 package com.codingmiracle.xoxyz.data;
 
-import com.codingmiracle.xoxyz.Player;
+import com.codingmiracle.xoxyz.Models.PlayerDto;
 
 import java.security.InvalidParameterException;
 import java.sql.*;
@@ -14,7 +14,7 @@ public class PlayerDataService {
     }
 
     public boolean createPlayer(String name) throws SQLException {
-        if(Player.isPlayerId(name)) {
+        if(PlayerDto.isPlayerId(name)) {
             throw  new InvalidParameterException();
         }
         PreparedStatement playerInsert = connection.prepareStatement("INSERT INTO db_xoxyz.tbl_player (player_name) VALUES (?)");
@@ -28,25 +28,25 @@ public class PlayerDataService {
         return playerDelete.execute();
     }
 
-    public Player queryPlayerById(Long id) throws SQLException {
-        Player player = null;
+    public PlayerDto queryPlayerById(Long id) throws SQLException {
+        PlayerDto playerDto = null;
         PreparedStatement playerQuery = connection.prepareStatement("SELECT * from tbl_player WHERE player_id = ?");
         playerQuery.setLong(1, id);
         ResultSet queryResult = playerQuery.executeQuery();
         while (queryResult.next()) {
-            player = new Player(queryResult.getBigDecimal(1).longValue(), queryResult.getString(2));
+            playerDto = new PlayerDto(queryResult.getBigDecimal(1).longValue(), queryResult.getString(2));
         }
-        return player;
+        return playerDto;
     }
 
-    public Player queryPlayerByName(String name) throws SQLException {
-        Player player = null;
+    public PlayerDto queryPlayerByName(String name) throws SQLException {
+        PlayerDto playerDto = null;
         PreparedStatement playerQuery = connection.prepareStatement("SELECT * from tbl_player WHERE player_name = ?");
         playerQuery.setString(1, name);
         ResultSet queryResult = playerQuery.executeQuery();
         while (queryResult.next()) {
-            player = new Player(queryResult.getBigDecimal(1).longValue(), queryResult.getString(2));
+            playerDto = new PlayerDto(queryResult.getBigDecimal(1).longValue(), queryResult.getString(2));
         }
-        return player;
+        return playerDto;
     }
 }
