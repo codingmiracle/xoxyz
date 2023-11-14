@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
+    "auto-rebuild": "vue-tsc && vite build --watch --emptyOutDir",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -1,6 +1,9 @@
-package at.codingmiracle.ticktacktoe.schema;
+package at.codingmiracle.ticktacktoe.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
